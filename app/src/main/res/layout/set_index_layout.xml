@@ -1,0 +1,196 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="fragments.SetIndex">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingTop="@dimen/activityPadding"
+        android:paddingBottom="@dimen/activityPadding"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="@dimen/smallMargin"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="2dp"
+                    android:text="Name"
+                    android:id="@+id/lbl"
+                    android:gravity="left"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:paddingStart="4dp"
+                    android:text="NAME"
+                    android:paddingEnd="2dp"
+                    android:textSize="@dimen/normalText"
+                    android:id="@+id/fragLbl"
+                    android:gravity="left"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:text="@string/pump"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/normalText"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/viewHeight"
+            android:background="@drawable/spinnerbck"
+            android:id="@+id/mPumps" />
+
+        <LinearLayout
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/activityPadding"
+            android:orientation="horizontal">
+            <TextView
+                android:text="@string/nozzle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/normalText"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/smallMargin" />
+
+        </LinearLayout>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/viewHeight"
+            android:background="@drawable/spinnerbck"
+            android:id="@+id/mNozzles" />
+
+        <RelativeLayout
+            android:layout_marginTop="@dimen/activityPadding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="@dimen/smallMargin"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="2dp"
+                    android:textSize="@dimen/normalText"
+                    android:id="@+id/nLbl"
+                    android:text=""
+                    android:gravity="left"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/normalText"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:paddingStart="4dp"
+                    android:paddingEnd="2dp"
+                    android:textStyle="bold"
+                    android:id="@+id/nozzleDetails"
+                    android:gravity="left"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activityPadding"
+            android:layout_marginBottom="@dimen/activityPadding"
+            android:orientation="horizontal">
+            <!--<TextView-->
+            <!--android:text="@string/water"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:padding="@dimen/smallPadding"-->
+            <!--android:layout_margin="@dimen/smallMargin"-->
+            <!--android:layout_weight="1" />-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/viewHeight"
+                android:background="@drawable/edit_text">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/smallPadding"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/appWhite"
+                    android:layout_margin="@dimen/smallMargin"
+                    android:hint="@string/index"
+                    android:maxLines="1"
+                    android:maxLength="30"
+                    android:id="@+id/index"
+                    android:inputType="number|numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!--<android.support.design.widget.TextInputLayout-->
+                <!--app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/viewHeight"-->
+                <!--android:background="@drawable/edit_text">-->
+                <!--<EditText-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--android:background="@color/appWhite"-->
+                    <!--android:padding="@dimen/smallPadding"-->
+                    <!--android:layout_margin="@dimen/smallMargin"-->
+                    <!--android:id="@+id/index"-->
+                    <!--android:hint="@string/index"-->
+                    <!--android:maxLines="1"-->
+                    <!--android:maxLength="30"-->
+                    <!--android:inputType="number|numberDecimal" />-->
+            <!--</android.support.design.widget.TextInputLayout>-->
+
+        </LinearLayout>
+
+        <Button
+            android:textStyle="bold"
+            android:textSize="@dimen/extraLargeText"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/viewActionHeight"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_positive"
+            android:textColor="@drawable/text_positive"
+            android:id="@+id/submit"
+            android:text="@string/submit"/>
+    </LinearLayout>
+
+</FrameLayout>

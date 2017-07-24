@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/defaultGray" android:layout_height="match_parent">
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/smallMargin"
+        android:id="@+id/header"
+        android:background="@color/appWhite"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/close"
+            android:padding="@dimen/smallPadding"
+            android:text="@string/close"
+            android:drawableTop="@drawable/ic_fail"
+
+            android:drawableTint="@null"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dialogTitle"
+            android:textSize="@dimen/largerText"
+            android:textColor="@color/colorPrimaryDark"
+            android:padding="@dimen/smallPadding"
+            android:text="@string/boxTitle"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"/>
+    </TableRow>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/defaultGray"
+        android:id="@+id/dialogContent"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/footer"
+        android:textSize="@dimen/largerText"
+        android:textColor="@color/colorPrimaryDark"
+        android:padding="@dimen/smallPadding"
+        android:text="@string/confirmContent"
+        android:layout_gravity="center_vertical"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/footer"
+        android:orientation="horizontal">
+
+        <Button
+            android:text="@string/cancel"
+            android:layout_width="0dp"
+            android:id="@+id/cancel"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/smallPadding"
+            android:layout_margin="@dimen/smallMargin"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="@string/submit"
+            android:layout_width="0dp"
+            android:id="@+id/submit"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/smallPadding"
+            android:layout_margin="@dimen/smallMargin"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+</RelativeLayout>

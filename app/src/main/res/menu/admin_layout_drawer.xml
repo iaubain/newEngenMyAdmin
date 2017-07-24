@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/tanking"
+            android:icon="@drawable/ic_menu_tank"
+            android:title="Tanking" />
+        <item
+            android:id="@+id/dipping"
+            android:icon="@drawable/ic_menu_dipping"
+            android:title="Dipping" />
+        <item
+            android:id="@+id/setIndex"
+            android:icon="@drawable/ic_menu_nozzle"
+            android:title="Set Index" />
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/ic_menu_logout"
+            android:title="Logout" />
+
+        <!--<item-->
+            <!--android:id="@+id/report"-->
+            <!--android:icon="@drawable/ic_report"-->
+            <!--android:title="Shift Report" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_slideshow"-->
+            <!--android:icon="@drawable/ic_menu_slideshow"-->
+            <!--android:title="Slideshow" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_manage"-->
+            <!--android:icon="@drawable/ic_menu_manage"-->
+            <!--android:title="Tools" />-->
+    </group>
+
+    <!--<item android:title="Other Actions">-->
+        <!--<menu>-->
+            <!--&lt;!&ndash;<item&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/settings"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:icon="@drawable/ic_menu_manage"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:title="Settings" />&ndash;&gt;-->
+            <!--<item-->
+                <!--android:id="@+id/logout"-->
+                <!--android:icon="@drawable/ic_menu_logout"-->
+                <!--android:title="Logout" />-->
+        <!--</menu>-->
+    <!--</item>-->
+
+</menu>

@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">My Admin</string>
+    <string name="home_title">Admin</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Enter your email</string>
+    <string name="prompt_password">Enter your password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">LOGIN</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="tvlabel">Fill Your Credentials</string>
+    <string name="title_activity_admin_home">Admin</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="payfuelAdmin">Payfuel Admin</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="tankStyle">mTank</string>
+    <string name="nozzleStyle">mNozzle</string>
+    <string name="pumpStyle">mPump</string>
+    <string name="userStyle">mUser</string>
+
+    <!-- form labels -->
+    <string name="orderNo">Order No</string>
+    <string name="product">Product</string>
+    <string name="index">Set Index</string>
+    <string name="nozzle">Select Nozzle</string>
+    <string name="pump">Select Pump</string>
+    <string name="setIndexlabel">SET INDEX</string>
+    <string name="dippingLabel">DIPPING</string>
+    <string name="tankingLabel">TANKING</string>
+    <string name="tank">Select Tank</string>
+    <string name="dipping">Dipping Value</string>
+    <string name="pretank">PreTank Value</string>
+    <string name="posttank">PostTank Value</string>
+    <string name="theoritical">Theoretical Value</string>
+    <string name="delivered">Delivered By</string>
+    <string name="TankId">Tank</string>
+    <string name="water">Water Value</string>
+    <string name="submit">SUBMIT</string>
+    <string name="close">Close</string>
+    <string name="boxTitle">Title</string>
+    <string name="confirmContent">Confirm Box Content</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="reset">Reset</string>
+    <string name="invalidData">Invalid Data</string>
+    <string name="tankingBoxTitle">Confirm Tanking…</string>
+    <string name="dippingBoxTitle">Confirm Dipping…</string>
+    <string name="ln">\n</string>
+    <string name="setAmount">Set Amount</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dialog_title">NOTIFICATION</string>
+    <string name="set_indexes">Set Indexes</string>
+</resources>

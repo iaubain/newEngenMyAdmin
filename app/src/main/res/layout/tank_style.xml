@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/viewActionHeight"
+    android:minHeight="@dimen/viewActionHeight"
+    android:gravity="start|center_vertical"
+    android:padding="@dimen/mediumPadding"
+    android:id="@+id/tankId"
+    android:textSize="27sp"
+    android:drawableStart="@drawable/ic_in_tank"
+    android:drawablePadding="@dimen/smallTextViewDrawablePadding"
+    android:drawableTint="@color/appBlue"
+    android:layout_marginBottom="@dimen/smallMargin"
+    android:textColor="@color/appBlue"
+    android:text="@string/tankStyle"/>

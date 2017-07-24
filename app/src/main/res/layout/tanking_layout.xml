@@ -1,0 +1,230 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/fragment_padding"
+    tools:context="fragments.Tanking">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/activityPadding"
+        android:paddingTop="@dimen/activityPadding"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/smallMargin"
+            android:text="Order"
+            android:textSize="15sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:id="@+id/orderDetails"/>
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/smallMargin"
+            android:id="@+id/tv"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:text="@string/tank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/normalText"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="@dimen/smallPadding"
+                android:paddingEnd="@dimen/smallPadding"/>
+
+        </LinearLayout>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/viewHeight"
+            android:background="@drawable/spinnerbck"
+            android:id="@+id/mTankView" />
+
+        <LinearLayout
+            android:paddingBottom="@dimen/activityPadding"
+            android:paddingTop="@dimen/activityPadding"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/viewHeight"
+                android:layout_marginTop="@dimen/activityPadding"
+                android:background="@drawable/edit_text">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/smallPadding"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/smallMargin"
+                android:background="@color/appWhite"
+                android:id="@+id/preTank"
+                android:layout_weight="2"
+                android:maxLines="1"
+                android:maxLength="9"
+                android:hint="@string/pretank"
+                android:inputType="number|numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:paddingBottom="@dimen/activityPadding"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!--<TextView-->
+                <!--android:text="@string/posttank"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:padding="@dimen/smallPadding"-->
+                <!--android:layout_margin="@dimen/smallMargin"-->
+                <!--android:layout_weight="1" />-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/viewHeight"
+                android:layout_marginTop="@dimen/activityPadding"
+                android:background="@drawable/edit_text">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/smallPadding"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:background="@color/appWhite"
+                android:hint="@string/posttank"
+                android:layout_margin="@dimen/smallMargin"
+                android:id="@+id/postTank"
+                android:maxLines="1"
+                android:maxLength="9"
+                android:inputType="number|numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!--<TextView-->
+                <!--android:text="@string/theoritical"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:padding="@dimen/smallPadding"-->
+                <!--android:layout_margin="@dimen/smallMargin"-->
+                <!--android:layout_weight="1" />-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dip"
+                android:hint="@string/theoritical"
+                android:layout_margin="@dimen/smallMargin"
+                android:id="@+id/theoretical"
+                android:maxLines="1"
+                android:maxLength="9"
+                android:inputType="number|numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!--<TextView-->
+                <!--android:text="@string/delivered"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:padding="@dimen/smallPadding"-->
+                <!--android:layout_margin="@dimen/smallMargin"-->
+                <!--android:layout_weight="1" />-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dip"
+                android:hint="@string/delivered"
+                android:layout_margin="@dimen/smallMargin"
+                android:id="@+id/delivered"
+                android:maxLines="1" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:paddingBottom="@dimen/activityPadding"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!--<TextView-->
+                <!--android:text="@string/water"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:padding="@dimen/smallPadding"-->
+                <!--android:layout_margin="@dimen/smallMargin"-->
+                <!--android:layout_weight="1" />-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/viewHeight"
+                android:layout_marginTop="@dimen/activityPadding"
+                android:background="@drawable/edit_text">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/smallPadding"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:background="@color/appWhite"
+                android:hint="@string/water"
+                android:layout_margin="@dimen/smallMargin"
+                android:maxLines="1"
+                android:id="@+id/waterValue"
+                android:inputType="number|numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!--<TextView-->
+                <!--android:text="@string/numberplate"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:padding="@dimen/smallPadding"-->
+                <!--android:layout_margin="@dimen/smallMargin"-->
+                <!--android:layout_weight="1" />-->
+
+
+        </LinearLayout>
+        <Button
+            android:textStyle="bold"
+            android:textSize="@dimen/extraLargeText"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_marginTop="@dimen/marginActionViews"
+            android:background="@drawable/button_positive"
+            android:textColor="@drawable/text_positive"
+            android:id="@+id/submit"
+            android:text="@string/submit"/>
+    </LinearLayout>
+
+</FrameLayout>
