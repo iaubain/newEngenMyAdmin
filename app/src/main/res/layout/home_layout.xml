@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="@dimen/activityPadding"
     android:fitsSystemWindows="true"
-    tools:context="com.olranz.payfuel.spmyadmin.Home">
+    tools:context="com.olranz.payfuel.engenmyadmin.Home">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

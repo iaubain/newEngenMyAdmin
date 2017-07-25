@@ -26,7 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.ViewGroup.LayoutParams;
 
-import com.olranz.payfuel.spmyadmin.R;
+import com.olranz.payfuel.engenmyadmin.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,11 +42,15 @@ import retrofit2.Response;
 import simplebean.indexbean.SetIndexBean;
 import simplebean.indexbean.UserPumpRequest;
 import simplebean.indexbean.SetIndexResponse;
+import simplebean.indexnozzles.IndexNozzle;
+import simplebean.indexnozzles.IndexNozzleResponse;
+import simplebean.indexnozzles.IndexNozzleResult;
 import simplebean.pumpbean.NozzleBean;
 import simplebean.pumpbean.PumpBean;
 import simplebean.pumpbean.PumpList;
 import simplebean.userbean.UserDetails;
 import simplebean.userbean.UserResponse;
+import utilities.DataFactory;
 import utilities.UserListAdapter;
 
 /**
@@ -69,20 +73,20 @@ public class SetIndex extends Fragment implements UserListAdapter.UserListIntera
 
     List<UserDetails> userDetailsList;
 
-    private PumpList pumpList;
-    private List<PumpBean> pumpBeanList;
-    private List<NozzleBean> nozzleBeanList;
-    private List<Integer> pumpIds;
+    private IndexNozzleResult pumpList;
+    private List<IndexNozzle> pumpBeanList;
+    private List<IndexNozzle> nozzleBeanList;
+    private List<String> pumpIds;
     private List<String> pumpNames;
-    private List<Integer> nozzleIds;
+    private List<String> nozzleIds;
     private List<String> nozzleNames;
 
-    private Map<String, List<NozzleBean>> pumpMap;
+    private Map<String, List<IndexNozzle>> pumpMap;
 
     private ArrayAdapter<String> pumpAdapter;
     private ArrayAdapter<String> nozzleAdapter;
 
-    int selectedNozzleId,selectedPumpId;
+    String selectedNozzleId,selectedPumpId;
     private String selectedNozzleName, selectedPumpName;
 
     private Spinner mPumps, mNozzles;
@@ -167,9 +171,26 @@ public class SetIndex extends Fragment implements UserListAdapter.UserListIntera
                 if(TextUtils.isEmpty(index.getText().toString().trim()))
                     uiFeed("Set index before you submit");
                 else{
-                    if(selectedNozzleId != 0 && userId != 0){
+                    if(!selectedNozzleId.equals("0") && userId != 0){
                         try {
-                            confirmDialog(new SetIndexBean(userId, branchId, selectedPumpId, selectedPumpName, selectedNozzleId, selectedNozzleName, Double.valueOf(index.getText().toString().trim())));
+                            if(!isPumpAvailable(selectedPumpName)){
+                                uiFeed("Internal application error. Pump not available");
+                                return;
+                            }
+                            List<IndexNozzle> mNozzles = pumpMap.get(selectedPumpName);
+                            IndexNozzle tempNozzle = null;
+                            for(IndexNozzle indexNozzle : mNozzles){
+                                if(selectedNozzleId.equals(indexNozzle.getId())){
+                                    tempNozzle = indexNozzle;
+                                    tempNozzle.setIndexCount(Double.valueOf(index.getText().toString().trim()));
+                                }
+                            }
+
+                            if(tempNozzle != null){
+                                confirmDialog(tempNozzle);
+                            }else{
+                                uiFeed("Internal application error. Nozzle not available");
+                            }
                         }catch (Exception e){
                             uiFeed(e.getMessage());
                             index.setError("revise index");
@@ -184,81 +205,81 @@ public class SetIndex extends Fragment implements UserListAdapter.UserListIntera
         loadPumpAgents();
     }
 
-private void loadPumpAgents(){
-    final TextView dialogTitle;
-    final RecyclerView userList;
-    ImageView close;
-    final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());;
+    private void loadPumpAgents(){
+        final TextView dialogTitle;
+        final RecyclerView userList;
+        ImageView close;
+        final RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());;
 
-    dialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-    dialog.setCancelable(false);
-    dialog.setCanceledOnTouchOutside(false);
-    dialog.setContentView(R.layout.user_list);
+        dialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(R.layout.user_list);
 
-    dialogTitle = (TextView) dialog.findViewById(R.id.dialogTitle);
-    dialogTitle.setTypeface(font, Typeface.BOLD);
-    userList = (RecyclerView) dialog.findViewById(R.id.recyclerView);
-    close = (ImageView) dialog.findViewById(R.id.icClose);
+        dialogTitle = (TextView) dialog.findViewById(R.id.dialogTitle);
+        dialogTitle.setTypeface(font, Typeface.BOLD);
+        userList = (RecyclerView) dialog.findViewById(R.id.recyclerView);
+        close = (ImageView) dialog.findViewById(R.id.icClose);
 
 
-    progressDialog.show();
-    progressDialog.setMessage("Loading pump attendant");
-    //get pumps from url
-    try {
-        ClientServices clientServices = ServerClient.getClient().create(ClientServices.class);
-        Call<UserResponse> callService = clientServices.getBranchUsers(branchId);
-        callService.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                progressDialog.dismiss();
-                //HTTP status code
-                int statusCode = response.code();
-                if(statusCode != 200){
-                    uiGoToHome("("+statusCode+") "+response.message());
-                    return;
-                }
-                Log.d(tag,"Server Result: \n"+new ClientData().mapping(response.body()));
-                try{
-                    Log.d(getClass().getSimpleName(),new ClientData().mapping(response.body()));
-
-                    if(response.body().getStatusCode() == 100){
-                        //dispatch Data
-                        userDetailsList=response.body().getUserDetailsList();
-                        userList.setHasFixedSize(true);
-                        userList.setLayoutManager(mLayoutManager);
-                        UserListAdapter adapter=new UserListAdapter(getContext(), SetIndex.this,userDetailsList, dialog);
-                        userList.setAdapter(adapter);
-                    }else{
-                        //Notify User that an error happened
-                        uiRefresh("("+statusCode+") "+response.body().getMessage());
+        progressDialog.show();
+        progressDialog.setMessage("Loading pump attendant");
+        //get pumps from url
+        try {
+            ClientServices clientServices = ServerClient.getClient().create(ClientServices.class);
+            Call<UserResponse> callService = clientServices.getBranchUsers(branchId);
+            callService.enqueue(new Callback<UserResponse>() {
+                @Override
+                public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    progressDialog.dismiss();
+                    //HTTP status code
+                    int statusCode = response.code();
+                    if(statusCode != 200){
+                        uiGoToHome("("+statusCode+") "+response.message());
+                        return;
                     }
+                    Log.d(tag,"Server Result: \n"+new ClientData().mapping(response.body()));
+                    try{
+                        Log.d(getClass().getSimpleName(),new ClientData().mapping(response.body()));
 
-                } catch (final Exception e) {
-                    e.printStackTrace();
-                    uiRefresh("Internal application error: "+e.getMessage());
+                        if(response.body().getStatusCode() == 100){
+                            //dispatch Data
+                            userDetailsList=response.body().getUserDetailsList();
+                            userList.setHasFixedSize(true);
+                            userList.setLayoutManager(mLayoutManager);
+                            UserListAdapter adapter=new UserListAdapter(getContext(), SetIndex.this,userDetailsList, dialog);
+                            userList.setAdapter(adapter);
+                        }else{
+                            //Notify User that an error happened
+                            uiRefresh("("+statusCode+") "+response.body().getMessage());
+                        }
+
+                    } catch (final Exception e) {
+                        e.printStackTrace();
+                        uiRefresh("Internal application error: "+e.getMessage());
+                    }
                 }
-            }
 
+                @Override
+                public void onFailure(Call<UserResponse> call, Throwable t) {
+                    // Log error here since request failed
+                    Log.e(getClass().getSimpleName(), t.toString());
+                    uiRefresh("General connectivity issue");
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            uiGoToHome("Internal application error: "+e.getMessage());
+        }
+
+        close.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                // Log error here since request failed
-                Log.e(getClass().getSimpleName(), t.toString());
-                uiRefresh("General connectivity issue");
+            public void onClick(View view) {
+                dialog.dismiss();
+                if(onSetIndexInteraction != null)
+                    onSetIndexInteraction.onSetIndex(Dipping.newInstance(userId, branchId), 0 ,"Go to home");
             }
         });
-    } catch (Exception e) {
-        e.printStackTrace();
-        uiGoToHome("Internal application error: "+e.getMessage());
-    }
-
-    close.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            dialog.dismiss();
-            if(onSetIndexInteraction != null)
-                onSetIndexInteraction.onSetIndex(Dipping.newInstance(userId, branchId), 0 ,"Go to home");
-        }
-    });
 
 //    close.setOnClickListener(new View.OnClickListener() {
 //        @Override
@@ -267,8 +288,8 @@ private void loadPumpAgents(){
 //            onSetIndexInteraction.onSetIndex(Dipping.newInstance(userId, branchId), 0 ,"Go to home");
 //        }
 //    });
-    dialog.show();
-}
+        dialog.show();
+    }
 
     private void loadPumps(){
         progressDialog.show();
@@ -276,13 +297,16 @@ private void loadPumpAgents(){
         //get pumps from url
         try {
             ClientServices clientServices = ServerClient.getClient().create(ClientServices.class);
-            Call<PumpList> callService = clientServices.getPumpList(new UserPumpRequest(""+userId));
-            callService.enqueue(new Callback<PumpList>() {
+            UserPumpRequest userPumpRequest = new UserPumpRequest(""+userId);
+            Log.d("Request", DataFactory.objectToString(userPumpRequest));
+            Call<IndexNozzleResult> callService = clientServices.getPumpList(userPumpRequest);
+            callService.enqueue(new Callback<IndexNozzleResult>() {
                 @Override
-                public void onResponse(Call<PumpList> call, Response<PumpList> response) {
+                public void onResponse(Call<IndexNozzleResult> call, Response<IndexNozzleResult> response) {
                     progressDialog.dismiss();
                     //HTTP status code
                     int statusCode = response.code();
+                    Log.d("Response", DataFactory.objectToString(response.body()));
                     if(statusCode != 200){
                         uiFeed("("+statusCode+") "+response.message());
                         return;
@@ -306,7 +330,7 @@ private void loadPumpAgents(){
                 }
 
                 @Override
-                public void onFailure(Call<PumpList> call, Throwable t) {
+                public void onFailure(Call<IndexNozzleResult> call, Throwable t) {
                     // Log error here since request failed
                     Log.e(getClass().getSimpleName(), t.toString());
                     uiFeed("General error: "+t.getMessage()+"");
@@ -318,17 +342,13 @@ private void loadPumpAgents(){
         }
     }
 
-    private void dispatchData(PumpList pumpList){
-        if(pumpList.getPumps() == null){
-            uiFeed("Empty Pumps");
-            return;
-        }
-        if(pumpList.getPumps().isEmpty()){
+    private void dispatchData(IndexNozzleResult pumpList){
+        if(pumpList.getIndexNozzle().isEmpty()){
             uiFeed("Empty Pumps");
             return;
         }
 
-        pumpBeanList=pumpList.getPumps();
+        pumpBeanList=pumpList.getIndexNozzle();
         pumpMap = new HashMap<>();
         pumpIds=new ArrayList<>();
         pumpNames=new ArrayList<>();
@@ -337,21 +357,40 @@ private void loadPumpAgents(){
         nozzleNames=new ArrayList<>();
         List<NozzleBean> nozzleBeanListTemp=new ArrayList<>();
 
-        for(PumpBean pumpBean: pumpBeanList){
-            pumpIds.add(pumpBean.getPumpId());
-//            pumpNames.add(pumpBean.getPumpId()+". "+pumpBean.getPumpName());
-            pumpNames.add(pumpBean.getPumpName());
+        for(IndexNozzle pumpBean: pumpBeanList){
+//            pumpIds.add(pumpBean.getPumpId());
+////            pumpNames.add(pumpBean.getPumpId()+". "+pumpBean.getPumpName());
+//            pumpNames.add(pumpBean.getPumpName());
 
-            nozzleBeanListTemp=pumpBean.getNozzles();
-            List<NozzleBean> nozzleTemp=new ArrayList<>();
-            for(NozzleBean nozzleBean: nozzleBeanListTemp){
-                    nozzleTemp.add(nozzleBean);
-            }
-//            pumpMap.put(pumpBean.getPumpId()+". "+pumpBean.getPumpName(),nozzleTemp);
-            pumpMap.put(pumpBean.getPumpName(),nozzleTemp);
+//            nozzleBeanListTemp=pumpBean.getNozzles();
+//            List<NozzleBean> nozzleTemp=new ArrayList<>();
+//            for(NozzleBean nozzleBean: nozzleBeanListTemp){
+//                    nozzleTemp.add(nozzleBean);
+//            }
+////            pumpMap.put(pumpBean.getPumpId()+". "+pumpBean.getPumpName(),nozzleTemp);
+            addNozzle(pumpBean.getPumpName(), pumpBean);
         }
 
         populatePumpSpinner(pumpNames);
+    }
+
+    private boolean isPumpAvailable(String pumpName){
+        return pumpMap.containsKey(pumpName);
+    }
+
+    private void addNozzle(String pumpName, IndexNozzle indexNozzle){
+        List<IndexNozzle> mNozzles = new ArrayList<>();
+        if(!isPumpAvailable(pumpName)){
+            mNozzles.add(indexNozzle);
+            pumpMap.put(pumpName, mNozzles);
+
+            pumpIds.add(indexNozzle.getPumpId());
+            pumpNames.add(indexNozzle.getPumpName());
+            return;
+        }
+        mNozzles = pumpMap.get(pumpName);
+        mNozzles.add(indexNozzle);
+        pumpMap.put(pumpName, mNozzles);
     }
 
     private void populatePumpSpinner(List<String> pumps){
@@ -381,7 +420,7 @@ private void loadPumpAgents(){
         });
     }
 
-    private void populateNozzleSpinner(List<NozzleBean> nozzles){
+    private void populateNozzleSpinner(List<IndexNozzle> nozzles){
         if(nozzles.isEmpty()){
             uiFeed("Empty Nozzles");
             return;
@@ -389,10 +428,10 @@ private void loadPumpAgents(){
 
         nozzleNames.clear();
         nozzleIds.clear();
-        for(NozzleBean nozzleBean: nozzles){
+        for(IndexNozzle nozzleBean: nozzles){
 //            nozzleNames.add(nozzleBean.getNozzleId()+". "+nozzleBean.getNozzleName());
-            nozzleNames.add(nozzleBean.getNozzleName());
-            nozzleIds.add(nozzleBean.getNozzleId());
+            nozzleNames.add(nozzleBean.getName());
+            nozzleIds.add(nozzleBean.getId());
         }
 
         if(nozzleNames.isEmpty()){
@@ -411,18 +450,18 @@ private void loadPumpAgents(){
                 selectedNozzleName=nozzleNames.get(position);
                 try{
 
-                    NozzleBean nozzleBean=nozzleBeanList.get(position);
-                    if(nozzleBean.getStatus() == 8){
-                        uiFeed("Nozzle "+nozzleBean.getNozzleName()+" taken by\n"+nozzleBean.getUserName());
-                    }else if(nozzleBean.getStatus() != 8 && nozzleBean.getStatus() != 7){
-                        uiFeed("Nozzle out of service\n"+nozzleBean.getUserName());
-                    }
-                    if(nozzleBean.getStatus() == 7){
-                        submit.setEnabled(true);
-                    }else if(nozzleBean.getStatus() == 8){
-                        submit.setEnabled(false);
-                    }
-                        populateNozzleDetails(nozzleBean);
+                    IndexNozzle nozzleBean=nozzleBeanList.get(position);
+//                    if(nozzleBean.getStatus() == 8){
+//                        uiFeed("Nozzle "+nozzleBean.getNozzleName()+" taken by\n"+nozzleBean.getUserName());
+//                    }else if(nozzleBean.getStatus() != 8 && nozzleBean.getStatus() != 7){
+//                        uiFeed("Nozzle out of service\n"+nozzleBean.getUserName());
+//                    }
+//                    if(nozzleBean.getStatus() == 7){
+//                        submit.setEnabled(true);
+//                    }else if(nozzleBean.getStatus() == 8){
+//                        submit.setEnabled(false);
+//                    }
+                    populateNozzleDetails(nozzleBean);
 
                 }catch (Exception e){
                     uiFeed(e.getMessage());
@@ -436,9 +475,9 @@ private void loadPumpAgents(){
         });
     }
 
-    private void populateNozzleDetails(NozzleBean nozzleBean){
-        String lbl = "SELLING\n"+"INDEXES";
-        String value = nozzleBean.getProductName()+"\n"+nozzleBean.getNozzleIndex()+"";
+    private void populateNozzleDetails(IndexNozzle nozzleBean){
+        String lbl = "NOZZLE\n"+"INDEXES";
+        String value = nozzleBean.getName()+"\n"+nozzleBean.getIndexCount()+"";
 //        String details="Nozzle: "+nozzleBean.getNozzleName()+"\n";
 //        details += "Current Index: "+nozzleBean.getNozzleIndex()+"\n";
 //        details += "Selling: "+nozzleBean.getProductName()+"\n";
@@ -457,7 +496,7 @@ private void loadPumpAgents(){
         }
     }
 
-    private void confirmDialog(final SetIndexBean setIndexBean){
+    private void confirmDialog(final IndexNozzle setIndexBean){
 //        String content="New Value entry for: \n\n";
 //        content +="Pump Name: "+setIndexBean.getPumpName()+"\n";
 //        content += "Nozzle Name: "+setIndexBean.getNozzleName()+"\n";
@@ -537,7 +576,7 @@ private void loadPumpAgents(){
 
             lblValue = new TextView(getContext());
             lblValue.setTypeface(font, Typeface.BOLD);
-            lblValue.setText(setIndexBean.getNozzleName()+"\n");
+            lblValue.setText(setIndexBean.getName()+"\n");
             lblValue.setTextSize(27);
             lblValue.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             lblValue.setId(View.generateViewId());
@@ -558,7 +597,7 @@ private void loadPumpAgents(){
 
             lblValue = new TextView(getContext());
             lblValue.setTypeface(font, Typeface.BOLD);
-            lblValue.setText(setIndexBean.getIndex()+"\n");
+            lblValue.setText(setIndexBean.getIndexCount()+"\n");
             lblValue.setTextSize(27);
             lblValue.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             lblValue.setId(View.generateViewId());
@@ -594,16 +633,16 @@ private void loadPumpAgents(){
         }
     }
 
-    private void proceed(final SetIndexBean setIndexBean){
+    private void proceed(final IndexNozzle setIndexBean){
         progressDialog.show();
         progressDialog.setMessage("Submitting Indexes");
         try {
             Log.d(tag,"Server Request: \n"+new ClientData().mapping(setIndexBean));
             ClientServices clientServices = ServerClient.getClient().create(ClientServices.class);
-            Call<SetIndexResponse> callService = clientServices.setIndex(setIndexBean);
-            callService.enqueue(new Callback<SetIndexResponse>() {
+            Call<IndexNozzleResponse> callService = clientServices.setIndex(setIndexBean);
+            callService.enqueue(new Callback<IndexNozzleResponse>() {
                 @Override
-                public void onResponse(Call<SetIndexResponse> call, Response<SetIndexResponse> response) {
+                public void onResponse(Call<IndexNozzleResponse> call, Response<IndexNozzleResponse> response) {
 
                     //HTTP status code
                     index.setText("");
@@ -614,7 +653,7 @@ private void loadPumpAgents(){
                     }
                     Log.d(tag,"Server Response: \n"+new ClientData().mapping(response.body()));
                     try{
-                        SetIndexResponse setIndexResponse=response.body();
+                        IndexNozzleResponse setIndexResponse=response.body();
                         uiFeed(setIndexResponse.getMessage());
                         onSetIndexInteraction.onSetIndex(null, 4, "next");
                         loadPumps();
@@ -624,7 +663,7 @@ private void loadPumpAgents(){
                 }
 
                 @Override
-                public void onFailure(Call<SetIndexResponse> call, Throwable t) {
+                public void onFailure(Call<IndexNozzleResponse> call, Throwable t) {
                     // Log error here since request failed
                     Log.e(getClass().getSimpleName(), t.toString());
                     uiFeed(t.getMessage()+"");
@@ -715,7 +754,8 @@ private void loadPumpAgents(){
             Toast.makeText(getContext(), feedBack, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
-            onSetIndexInteraction.onSetIndex(Dipping.newInstance(userId, branchId), 0 ,"Go to home");
+            if(onSetIndexInteraction != null)
+                onSetIndexInteraction.onSetIndex(Dipping.newInstance(userId, branchId), 0 ,"Go to home");
         }
     }
 

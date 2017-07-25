@@ -10,6 +10,9 @@ import simplebean.dippingbean.DippingResp;
 import simplebean.indexbean.SetIndexBean;
 import simplebean.indexbean.UserPumpRequest;
 import simplebean.indexbean.SetIndexResponse;
+import simplebean.indexnozzles.IndexNozzle;
+import simplebean.indexnozzles.IndexNozzleResponse;
+import simplebean.indexnozzles.IndexNozzleResult;
 import simplebean.loginbean.AuthenticationBean;
 import simplebean.loginbean.AuthenticationResp;
 import simplebean.orders.OrderRequest;
@@ -57,13 +60,12 @@ public interface ClientServices {
     Call<TankList> getTankList(@Body CommonRequest commonRequest);
 
     //Pump List
-    @POST(AppUrl.PUMP_URL)
-    Call<PumpList> getPumpList(@Body UserPumpRequest setIndexRequest);
+    @POST(AppUrl.NOZZLE_URL)
+    Call<IndexNozzleResult> getPumpList(@Body UserPumpRequest setIndexRequest);
 
     //set Index
     @POST(AppUrl.SET_INDEX_URL)
-    Call<SetIndexResponse> setIndex(@Body SetIndexBean setIndexBean);
-
+    Call<IndexNozzleResponse> setIndex(@Body IndexNozzle setIndexBean);
     //Payment List
     @GET(AppUrl.PAYMENT_MODE_URL +"{userId}")
     Call<PaymentModeResponse> getPaymentMode(@Path("userId") int userId);

@@ -1,4 +1,4 @@
-package com.olranz.payfuel.spmyadmin;
+package com.olranz.payfuel.engenmyadmin;
 
 import org.junit.Test;
 

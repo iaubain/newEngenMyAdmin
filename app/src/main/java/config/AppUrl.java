@@ -13,8 +13,8 @@ class AppUrl {
     static final String TANKING_URL ="EngenEquipment/tanking/create";
     //static final String TANK_LIST_URL ="SpPayFuel/TankManagementService/tanks";//tank/list
     static final String TANK_LIST_URL ="EngenEquipment/tank/list";
-    static final String PUMP_URL ="EngenEquipment/pump/pumpDash";
-    static final String SET_INDEX_URL ="EngenEquipment/NozzleManagementService/nozzle/adjust";
+    static final String NOZZLE_URL ="EngenEquipment/nozzle/list/user";
+    static final String SET_INDEX_URL ="EngenEquipment/nozzle/create";
     static final String REPORT_MONEY_URL ="EngenPayFuel/UserManagementService/user/shift";
     static final String PAYMENT_MODE_URL="EngenPayFuel/PaymentModeManagementService/paymentmodes/";
     static final String GET_USER_URL="EngenPayFuel/UserManagementService/users/";

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.2"
 
     defaultConfig {
-        applicationId "com.olranz.payfuel.spmyadmin"
+        applicationId "com.olranz.payfuel.engenmyadmin"
         minSdkVersion 17
         targetSdkVersion 24
         versionCode 1
